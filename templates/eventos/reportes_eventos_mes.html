@@ -1,0 +1,13 @@
+{% extends "eventos/base.html" %}
+{% block content %}
+<h1>Eventos del mes</h1>
+<p>Desde {{ inicio }} hasta {{ fin }}</p>
+<p><strong>Total:</strong> {{ total }}</p>
+<ul>
+  {% for e in eventos %}
+    <li><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a> — {{ e.fecha_inicio }}</li>
+  {% empty %}
+    <li>Sin eventos</li>
+  {% endfor %}
+</ul>
+{% endblock %}

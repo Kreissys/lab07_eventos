@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Eventos{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;max-width:900px;margin:20px auto;padding:0 16px}
+    nav a{margin-right:10px}
+    .card{border:1px solid #ddd;padding:12px;border-radius:8px;margin-bottom:12px}
+    .btn{display:inline-block;padding:6px 10px;border:1px solid #888;border-radius:6px;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="{% url 'eventos:lista' %}">Inicio</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'eventos:crear' %}">Crear evento</a>
+      <a href="{% url 'logout' %}">Salir</a>
+    {% else %}
+      <a href="{% url 'login' %}">Ingresar</a>
+      <a href="{% url 'signup' %}">Registrarme</a>
+    {% endif %}
+    <a href="{% url 'eventos:usuarios_activos' %}">Usuarios activos</a>
+    <a href="{% url 'eventos:eventos_mes' %}">Eventos del mes</a>
+  </nav>
+  <hr>
+  {% if messages %}
+    <ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>

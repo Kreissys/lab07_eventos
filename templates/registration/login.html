@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Iniciar sesión</title></head>
+<body>
+  <h1>Login</h1>
+  {% if form.errors %}<p>Usuario o contraseña inválidos.</p>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+  </form>
+  <p>¿No tienes cuenta? <a href="{% url 'signup' %}">Registrarme</a></p>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "eventos/base.html" %}
+{% block content %}
+<h1>Eventos organizados por {{ usuario.username }}</h1>
+<p><strong>Total:</strong> {{ cantidad }}</p>
+<ul>
+  {% for e in eventos %}
+    <li><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a></li>
+  {% empty %}
+    <li>Sin eventos</li>
+  {% endfor %}
+</ul>
+{% endblock %}

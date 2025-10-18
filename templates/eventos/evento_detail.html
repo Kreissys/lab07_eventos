@@ -1,0 +1,43 @@
+{% extends "eventos/base.html" %}
+{% block title %}Detalle del evento{% endblock %}
+{% block content %}
+<h1>{{ evento.titulo }}</h1>
+<p>{{ evento.descripcion }}</p>
+<p><strong>Inicio:</strong> {{ evento.fecha_inicio }} | <strong>Fin:</strong> {{ evento.fecha_fin }}</p>
+<p><strong>Organizador:</strong> {{ evento.organizador.username }}</p>
+
+{% if user.is_authenticated %}
+  {% if ya_registrado %}
+    <p>Ya estás registrado.</p>
+  {% else %}
+    <form method="post" action="{% url 'eventos:registrarme' evento.pk %}">
+      {% csrf_token %}
+      {{ form_registro.as_p }}
+      <button class="btn" type="submit">Registrarme</button>
+    </form>
+  {% endif %}
+{% else %}
+  <p>Inicia sesión para registrarte.</p>
+{% endif %}
+
+<h3>Registros</h3>
+<ul>
+  {% for r in registros %}
+    <li>{{ r.usuario.username }} — {{ r.estado }} — {{ r.fecha_registro }}
+      {% if user.is_superuser or user == evento.organizador %}
+        &nbsp; <a class="btn" href="{% url 'eventos:cambiar_estado' r.id %}?estado=confirmado">Confirmar</a>
+        <a class="btn" href="{% url 'eventos:cambiar_estado' r.id %}?estado=cancelado">Cancelar</a>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li>Sin registros</li>
+  {% endfor %}
+</ul>
+
+{% if user.is_superuser or user == evento.organizador %}
+  <p>
+    <a class="btn" href="{% url 'eventos:editar' evento.pk %}">Editar</a>
+    <a class="btn" href="{% url 'eventos:eliminar' evento.pk %}">Eliminar</a>
+  </p>
+{% endif %}
+{% endblock %}

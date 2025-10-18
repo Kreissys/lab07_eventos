@@ -1,0 +1,15 @@
+{% extends "eventos/base.html" %}
+{% block title %}Lista de eventos{% endblock %}
+{% block content %}
+<h1>Eventos</h1>
+{% for e in eventos %}
+  <div class="card">
+    <h3><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a></h3>
+    <p>{{ e.descripcion|truncatechars:140 }}</p>
+    <p><strong>Inicio:</strong> {{ e.fecha_inicio }} | <strong>Fin:</strong> {{ e.fecha_fin }}</p>
+    <p><strong>Organizador:</strong> {{ e.organizador.username }} | <strong>Inscritos:</strong> {{ e.inscritos }}</p>
+  </div>
+{% empty %}
+  <p>No hay eventos.</p>
+{% endfor %}
+{% endblock %}
