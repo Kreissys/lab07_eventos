@@ -1,14 +1,16 @@
-<!doctype html>
-<html lang="es">
-<head><meta charset="utf-8"><title>Iniciar sesión</title></head>
-<body>
-  <h1>Login</h1>
-  {% if form.errors %}<p>Usuario o contraseña inválidos.</p>{% endif %}
+{% extends "eventos/base.html" %}
+{% block title %}Ingresar{% endblock %}
+{% block content %}
+<div class="card p-4 form-wrap">
+  <h1 class="h4 mb-3">Iniciar sesión</h1>
+  {% if form.errors %}
+    <div class="alert alert-danger">Usuario o contraseña inválidos.</div>
+  {% endif %}
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Entrar</button>
+    <button class="btn btn-primary btn-shadow" type="submit">Entrar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'signup' %}">Registrarme</a>
   </form>
-  <p>¿No tienes cuenta? <a href="{% url 'signup' %}">Registrarme</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

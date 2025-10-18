@@ -1,15 +1,47 @@
 {% extends "eventos/base.html" %}
-{% block title %}Lista de eventos{% endblock %}
+{% block title %}Eventos{% endblock %}
 {% block content %}
-<h1>Eventos</h1>
-{% for e in eventos %}
-  <div class="card">
-    <h3><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a></h3>
-    <p>{{ e.descripcion|truncatechars:140 }}</p>
-    <p><strong>Inicio:</strong> {{ e.fecha_inicio }} | <strong>Fin:</strong> {{ e.fecha_fin }}</p>
-    <p><strong>Organizador:</strong> {{ e.organizador.username }} | <strong>Inscritos:</strong> {{ e.inscritos }}</p>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0">Eventos</h1>
+  {% if user.is_authenticated %}
+    <a class="btn btn-primary btn-shadow" href="{% url 'eventos:crear' %}">+ Nuevo</a>
+  {% endif %}
+</div>
+
+{% if eventos %}
+  <div class="row g-3">
+    {% for e in eventos %}
+      <div class="col-12">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between flex-wrap gap-2">
+            <div>
+              <h5 class="mb-1">
+                <a class="link-underline link-underline-opacity-0" href="{% url 'eventos:detalle' e.pk %}">
+                  {{ e.titulo }}
+                </a>
+              </h5>
+              <div class="text-secondary small">
+                <span class="me-3"><strong>Inicio:</strong> {{ e.fecha_inicio }}</span>
+                <span class="me-3"><strong>Fin:</strong> {{ e.fecha_fin }}</span>
+                <span class="me-3"><strong>Organizador:</strong> {{ e.organizador.username }}</span>
+                <span><strong>Inscritos:</strong> {{ e.inscritos }}</span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-3 mb-0 text-secondary">{{ e.descripcion|truncatechars:220 }}</p>
+        </div>
+      </div>
+    {% endfor %}
   </div>
-{% empty %}
-  <p>No hay eventos.</p>
-{% endfor %}
+{% else %}
+  <div class="text-center text-secondary py-5">
+    <p class="lead mb-1">No hay eventos disponibles.</p>
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary btn-shadow" href="{% url 'eventos:crear' %}">Crear el primero</a>
+    {% else %}
+      <a class="btn btn-primary btn-shadow" href="{% url 'login' %}">Inicia sesión para crear uno</a>
+    {% endif %}
+  </div>
+{% endif %}
 {% endblock %}

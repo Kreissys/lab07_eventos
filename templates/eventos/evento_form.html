@@ -1,10 +1,15 @@
 {% extends "eventos/base.html" %}
-{% block title %}Formulario de evento{% endblock %}
+{% block title %}{{ view.object|default:'Nuevo evento' }}{% endblock %}
 {% block content %}
-<h1>{{ view.object|default:'Nuevo evento' }}</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn" type="submit">Guardar</button>
-</form>
+
+<div class="card p-4">
+  <h1 class="h4 mb-3">{{ view.object|default:'Nuevo evento' }}</h1>
+  <form class="form-wrap" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary btn-shadow" type="submit">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'eventos:lista' %}">Cancelar</a>
+  </form>
+</div>
+
 {% endblock %}

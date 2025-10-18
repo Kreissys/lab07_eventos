@@ -1,13 +1,18 @@
 {% extends "eventos/base.html" %}
+{% block title %}Eventos del mes{% endblock %}
 {% block content %}
-<h1>Eventos del mes</h1>
-<p>Desde {{ inicio }} hasta {{ fin }}</p>
-<p><strong>Total:</strong> {{ total }}</p>
-<ul>
-  {% for e in eventos %}
-    <li><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a> — {{ e.fecha_inicio }}</li>
-  {% empty %}
-    <li>Sin eventos</li>
-  {% endfor %}
-</ul>
+<div class="card p-4">
+  <h1 class="h4 mb-3">Eventos del mes</h1>
+  <p class="text-secondary">Desde {{ inicio }} hasta {{ fin }}</p>
+  <p class="mb-3">Total: <span class="badge text-bg-primary">{{ total }}</span></p>
+  <ul class="list-group list-group-flush">
+    {% for e in eventos %}
+      <li class="list-group-item">
+        <a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a> — {{ e.fecha_inicio }}
+      </li>
+    {% empty %}
+      <li class="list-group-item text-secondary">Sin eventos</li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

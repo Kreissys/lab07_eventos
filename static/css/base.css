@@ -1,0 +1,62 @@
+/* Ajustes suaves encima de Bootstrap */
+:root {
+  --brand: #0d6efd;
+  --bg: #f7f7fb;
+}
+
+body {
+  background: var(--bg);
+}
+
+.navbar-brand strong {
+  letter-spacing: .3px;
+}
+
+.card {
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+.btn-shadow {
+  box-shadow: 0 6px 12px rgba(13,110,253,.15);
+}
+
+.form-control, .form-select, textarea {
+  border-radius: 10px !important;
+}
+
+.container-narrow {
+  max-width: 960px;
+}
+
+footer {
+  color: #6c757d;
+}
+
+/* Mejoras para formularios más centrados */
+.form-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* Links de acciones en tarjetas */
+.card-actions a,
+.card-actions form button {
+  margin-right: .5rem;
+}
+
+/* Mensajes */
+.alert {
+  border-radius: 12px;
+}
+
+/* Botón “Salir” que parece link */
+button.linklike {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #0d6efd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+button.linklike:hover { opacity: .8; }

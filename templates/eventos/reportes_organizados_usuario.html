@@ -1,12 +1,15 @@
 {% extends "eventos/base.html" %}
+{% block title %}Eventos organizados{% endblock %}
 {% block content %}
-<h1>Eventos organizados por {{ usuario.username }}</h1>
-<p><strong>Total:</strong> {{ cantidad }}</p>
-<ul>
-  {% for e in eventos %}
-    <li><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a></li>
-  {% empty %}
-    <li>Sin eventos</li>
-  {% endfor %}
-</ul>
+<div class="card p-4">
+  <h1 class="h4 mb-3">Eventos organizados por {{ usuario.username }}</h1>
+  <p>Total: <span class="badge text-bg-primary">{{ cantidad }}</span></p>
+  <ul class="list-group list-group-flush">
+    {% for e in eventos %}
+      <li class="list-group-item"><a href="{% url 'eventos:detalle' e.pk %}">{{ e.titulo }}</a></li>
+    {% empty %}
+      <li class="list-group-item text-secondary">Sin eventos</li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

@@ -1,11 +1,14 @@
 {% extends "eventos/base.html" %}
 {% block title %}Eliminar evento{% endblock %}
 {% block content %}
-<h1>Eliminar evento</h1>
-<p>¿Seguro que deseas eliminar "{{ object.titulo }}"?</p>
-<form method="post">
-  {% csrf_token %}
-  <button class="btn" type="submit">Sí, eliminar</button>
-  <a class="btn" href="{% url 'eventos:detalle' object.pk %}">Cancelar</a>
-</form>
+<div class="card p-4 text-center">
+  <h1 class="h4">¿Eliminar evento?</h1>
+  <p class="text-secondary">Esta acción no se puede deshacer.</p>
+  <p><strong>"{{ object.titulo }}"</strong></p>
+  <form method="post" class="d-inline-block">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-shadow" type="submit">Sí, eliminar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'eventos:detalle' object.pk %}">Cancelar</a>
+  </form>
+</div>
 {% endblock %}

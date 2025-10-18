@@ -1,11 +1,14 @@
 {% extends "eventos/base.html" %}
+{% block title %}Usuarios más activos{% endblock %}
 {% block content %}
-<h1>Usuarios más activos (confirmados)</h1>
-<ol>
-  {% for u in top %}
-    <li>{{ u.username }} — {{ u.confirmados }} registros confirmados</li>
-  {% empty %}
-    <li>Sin datos</li>
-  {% endfor %}
-</ol>
+<div class="card p-4">
+  <h1 class="h4 mb-3">Usuarios más activos (confirmados)</h1>
+  <ol class="mb-0">
+    {% for u in top %}
+      <li class="mb-1">{{ u.username }} — <strong>{{ u.confirmados }}</strong> confirmados</li>
+    {% empty %}
+      <li class="text-secondary">Sin datos</li>
+    {% endfor %}
+  </ol>
+</div>
 {% endblock %}
