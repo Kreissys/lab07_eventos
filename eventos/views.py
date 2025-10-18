@@ -15,7 +15,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .forms import EventoForm, RegistroEventoForm
 from .models import Evento, RegistroEvento
 
-# ------------------- LISTA/DETALLE/CRUD EVENTO -------------------
+# ---- LISTA / DETALLE / CRUD EVENTOS ----
 
 class EventoListView(ListView):
     model = Evento
@@ -74,7 +74,7 @@ class EventoDeleteView(LoginRequiredMixin, SoloOrganizadorMixin, DeleteView):
     template_name = "eventos/evento_confirm_delete.html"
     success_url = reverse_lazy("eventos:lista")
 
-# ------------------- INSCRIPCIONES -------------------
+# ---- INSCRIPCIONES ----
 
 @login_required
 def registrarme(request, pk):
@@ -90,7 +90,7 @@ def registrarme(request, pk):
 @login_required
 def cambiar_estado_registro(request, registro_id):
     reg = get_object_or_404(RegistroEvento, id=registro_id)
-    if (not request.user.is_superuser) and (reg.evento.organizador != request.user):
+    if (not request.user.is_superuser) and (reg.evento.organizador != self.request.user):
         raise Http404("No autorizado")
 
     nuevo_estado = request.GET.get("estado", RegistroEvento.CONFIRMADO)
@@ -103,7 +103,7 @@ def cambiar_estado_registro(request, registro_id):
     messages.success(request, f"Estado cambiado a {nuevo_estado}.")
     return redirect("eventos:detalle", pk=reg.evento.pk)
 
-# ------------------- REPORTES -------------------
+# ---- REPORTES ----
 
 def usuarios_mas_activos(request):
     top = (User.objects
@@ -111,7 +111,6 @@ def usuarios_mas_activos(request):
                models.Q(registros_evento__estado=RegistroEvento.CONFIRMADO)
            )))
            .order_by("-confirmados")[:10])
-
     return render(request, "eventos/reportes_usuarios_activos.html", {"top": top})
 
 def eventos_del_mes(request):
@@ -124,7 +123,8 @@ def eventos_del_mes(request):
 
     total = Evento.objects.filter(fecha_inicio__gte=inicio_mes, fecha_inicio__lt=fin_mes).count()
     eventos = Evento.objects.filter(fecha_inicio__gte=inicio_mes, fecha_inicio__lt=fin_mes)
-    return render(request, "eventos/reportes_eventos_mes.html", {"total": total, "eventos": eventos, "inicio": inicio_mes, "fin": fin_mes})
+    return render(request, "eventos/reportes_eventos_mes.html",
+                  {"total": total, "eventos": eventos, "inicio": inicio_mes, "fin": fin_mes})
 
 def inscritos_por_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
@@ -135,27 +135,26 @@ def eventos_organizados_por_usuario(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     cantidad = user.eventos_organizados.count()
     eventos = user.eventos_organizados.all()
-    return render(request, "eventos/reportes_organizados_usuario.html", {"usuario": user, "cantidad": cantidad, "eventos": eventos})
+    return render(request, "eventos/reportes_organizados_usuario.html",
+                  {"usuario": user, "cantidad": cantidad, "eventos": eventos})
 
-# ------------------- SIGNUP (REGISTRO DE USUARIOS) -------------------
+# ---- SIGNUP (registro de usuarios) ----
 
 def signup(request):
     """
-    Página de registro. Crea un usuario con UserCreationForm.
-    Por defecto, tras registrarse se redirige a login. 
-    Si quieres loguearlo automáticamente, descomenta auth_login(...) y cambia el redirect.
+    Registro básico con UserCreationForm.
+    Por defecto, tras registrarse lo envío al login.
+    Si prefieres login automático, descomenta auth_login(...) y cambia el redirect.
     """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # --- opción A: login automático ---
+            # --- opción: login automático ---
             # auth_login(request, user)
             # return redirect('eventos:lista')
-            # --- opción B: llevar al login (por defecto) ---
             messages.success(request, "Cuenta creada. Inicia sesión para continuar.")
             return redirect('login')
     else:
         form = UserCreationForm()
-
     return render(request, 'registration/signup.html', {'form': form})

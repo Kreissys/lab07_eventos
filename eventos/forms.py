@@ -9,4 +9,4 @@ class EventoForm(forms.ModelForm):
 class RegistroEventoForm(forms.ModelForm):
     class Meta:
         model = RegistroEvento
-        fields = []  # no pedimos campos; se toma usuario/evento del contexto
+        fields = []  # lo inferimos (evento/usuario) desde la vista
